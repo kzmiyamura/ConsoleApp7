@@ -36,11 +36,13 @@ yaml
 
 ## 📂 ディレクトリ構成
 
+```
 ConsoleAppStopwatch/
 ├─ Program.cs
 ├─ HighPrecisionStopwatchV1.cs   // DateTime ベース実装
 ├─ HighPrecisionStopwatchV2.cs   // Stopwatch ベース実装（完成形）
 └─ README.md
+```
 
 yaml
 コードをコピーする
