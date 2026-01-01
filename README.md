@@ -29,9 +29,6 @@ C# コンソールアプリで作成した **高精度ストップウォッチ**
 表示形式：  
 mm:ss.xx
 
-yaml
-コードをコピーする
-
 ---
 
 ## 📂 ディレクトリ構成
@@ -43,9 +40,6 @@ ConsoleAppStopwatch/
 ├─ HighPrecisionStopwatchV2.cs   // Stopwatch ベース実装（完成形）
 └─ README.md
 ```
-
-yaml
-コードをコピーする
 
 ---
 
