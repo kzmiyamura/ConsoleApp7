@@ -1,61 +1,45 @@
-﻿# ConsoleAppStopwatch (HighPrecisionStopwatch V2)
+﻿# ConsoleAppStopwatch
 
-C# コンソールアプリで実装した、  
-**高精度ストップウォッチ**のサンプルプロジェクトです。
-
-キー操作による開始・停止・リセットに対応し、  
-`DateTime.UtcNow` を用いた **時間基準ベースの設計（V2）** により、  
-描画やスレッド遅延の影響を受けない正確な計測を行います。
+C# コンソールアプリで作成した **高精度ストップウォッチ** です。  
+キー入力で操作でき、内部実装の違いによる精度差を学習できる構成になっています。
 
 ---
 
-## 🎯 目的
+## 🎯 概要
 
-- C# コンソールアプリの基礎構造理解
-- 時間計測ロジックと UI（Console）の分離
-- 精度の低い「ループ加算方式」からの脱却
-- 実務を意識した設計改善（V1 → V2）
+このプロジェクトでは、以下の 2 種類のストップウォッチ実装を比較しています。
 
----
+| バージョン | 実装方式 | 特徴 |
+|-----------|---------|------|
+| V1 | DateTime.UtcNow | シンプルだがズレが出やすい |
+| V2 | System.Diagnostics.Stopwatch | 高精度・実運用向き（完成形） |
 
-## ⏱ 機能一覧
-
-- Space：開始 / 停止（トグル）
-- Delete / Backspace：リセット
-- Enter：アプリ終了
-- 表示形式：`MM:SS.ff`（分:秒.1/100秒）
-- 停止中は時間が進まない
-- 再開時も正確に継続計測
+現在の `Program.cs` では **V2（Stopwatch ベース）** を使用しています。
 
 ---
 
-## 🧠 設計のポイント（V2）
+## ⌨ 操作方法
 
-### なぜ V2 にしたか？
+| キー | 動作 |
+|----|----|
+| Space | 開始 / 一時停止 |
+| Delete / Backspace | リセット |
+| Enter | 終了 |
 
-V1 では以下の問題がありました：
+表示形式：  
+mm:ss.xx
 
-- `Thread.Sleep` の誤差に依存
-- 描画遅延で時間がズレる
-- 一時停止中も内部時間が進む可能性
-
-V2 では：
-
-- **「現在時刻 − 開始時刻」** を基準に経過時間を算出
-- 停止時は経過時間を確定保存
-- 再開時は開始時刻を再設定
-
-これにより、  
-**処理が遅れても計測時間は正確**になります。
+yaml
+コードをコピーする
 
 ---
 
-## 📂 構成例
+## 📂 ディレクトリ構成
 
-ConsoleAppStopwatch
+ConsoleAppStopwatch/
 ├─ Program.cs
-├─ HighPrecisionStopwatch.cs // V1（学習用）
-├─ HighPrecisionStopwatchV2.cs // 完成版
+├─ HighPrecisionStopwatchV1.cs // DateTime ベース実装
+├─ HighPrecisionStopwatchV2.cs // Stopwatch ベース実装（完成形）
 └─ README.md
 
 yaml
@@ -63,27 +47,13 @@ yaml
 
 ---
 
-## ▶ 実行方法
+## 🧠 実装の考え方
 
-1. Visual Studio でソリューションを開く
-2. `Program.cs` を起動
-3. コンソール上でキー操作
+### HighPrecisionStopwatch V1（DateTime ベース）
 
----
+- `DateTime.UtcNow` の差分で経過時間を計算
+- スレッドスリープや描画遅延の影響を受けやすい
+- 学習用として「なぜズレるのか」を理解するのに適している
 
-## 🚀 今後の拡張案
-
-- `System.Diagnostics.Stopwatch` を使ったさらに高精度な実装
-- `IStopwatch` インターフェースによる差し替え設計
-- 単体テスト対応（時間プロバイダ注入）
-- WPF / WinForms への UI 展開
-- ラップタイム機能の追加
-
----
-
-## 📝 補足
-
-このプロジェクトは **学習目的**で作成されていますが、  
-構造・考え方は実務でもそのまま通用する内容になっています。
-
-「なぜこう設計したか」を説明できることを重視しています。
+```csharp
+var elapsed = (DateTime.UtcNow - _startTime).TotalSeconds;
